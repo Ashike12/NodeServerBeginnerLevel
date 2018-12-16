@@ -74,12 +74,42 @@ module.exports = function (app, passport) {
     app.get('/connect/local', function (req, res) {
         res.render('connect-local.ejs', { message: req.flash('signupMessage') });
     });
-
     app.post('/connect/local', passport.authenticate('local-signup', {
         successRedirect: '/profile',
         failureRedirect: '/connect/local',
         failureFlash: true
     }));
+    
+    app.get('/unlink/facebook', function(req, res){
+        var user = req.user;
+        user.facebook.token = null;
+        user.save(function (err){
+            if(err)
+                throw err;
+            res.redirect('/profile');
+        });
+    });
+
+    app.get('/unlink/google', function(req, res){
+        var user = req.user;
+        user.google.token = null;
+        user.save(function (err){
+            if(err)
+                throw err;
+            res.redirect('/profile');
+        });
+    });
+
+    app.get('/unlink/local', function(req, res){
+        var user = req.user;
+        user.local.email = null;
+        user.local.password = null;
+        user.save(function (err){
+            if(err)
+                throw err;
+            res.redirect('/profile');
+        });
+    });
 
     // app.get('/:userInfo', function(req, res){
     //     var newUser = new User();

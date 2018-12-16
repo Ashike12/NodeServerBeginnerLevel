@@ -164,7 +164,7 @@ module.exports = function (passport) {
 
 					});
 				} else {
-					var user = new User();
+					var user = req.user;
 					user.google.id = profile.id;
 					user.google.token = accessToken;
 					user.google.name = profile.displayName;
